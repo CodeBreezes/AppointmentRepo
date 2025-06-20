@@ -1,17 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Appointment.Models
 {
     public class Booking
     {
         [Key]
-        public int Id { get; set; }
-        public int BookingId { get; set; }
-        public DateOnly Date { get; set; }
+        public int UniqueId { get; set; }
+ 
         public int ServiceId { get; set; }
+        [ForeignKey("ServiceId")]
+        public Services Service { get; set; } = null!;
+
         public int CustomerId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        [ForeignKey("CustomerId")]
+
+        public Customer Customer { get; set; } = null!;
+        public DateTime StartedDate { get; set; }
+        public DateTime EndedDate { get; set; }
 
     }
 }
