@@ -78,6 +78,9 @@ namespace Appointment.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
+            customer.CreatedDate = DateTime.Now;
+            customer.LastUpdatedDate = DateTime.Now;
+
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 

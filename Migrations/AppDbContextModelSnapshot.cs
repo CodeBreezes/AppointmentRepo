@@ -72,7 +72,7 @@ namespace Appointment.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("AppUsers");
+                    b.ToTable("AppUsers", (string)null);
                 });
 
             modelBuilder.Entity("Appointment.Models.Booking", b =>
@@ -101,7 +101,7 @@ namespace Appointment.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("Appointment.Models.Customer", b =>
@@ -136,7 +136,7 @@ namespace Appointment.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("Appointment.Models.Services", b =>
@@ -173,7 +173,7 @@ namespace Appointment.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("Appointment.Models.Booking", b =>
