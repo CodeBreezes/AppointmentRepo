@@ -15,7 +15,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return Content("Welcome to Muskan BPST's Home Page!");
+        return View();
     }
 
     public IActionResult Privacy()
