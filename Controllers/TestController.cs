@@ -10,7 +10,7 @@ namespace Appointment.Controllers
         [HttpGet("GetMyNameJson")]
         public IActionResult GetMyNameJson()
         {
-            var result = new { Name = "Muskan BPST" };
+            var result = new { Name = "Sanjay BPST" };
             return Ok(result);
         }
     }
