@@ -16,7 +16,8 @@ namespace Appointment.Models
         [ForeignKey("CustomerId")]
 
         public Customer Customer { get; set; } = null!;
-        public DateTime StartedDate { get; set; }
+        public DateOnly StartedDate { get; set; }
+        public TimeOnly StartedTime { get; set; }
         public DateTime EndedDate { get; set; }
 
     }

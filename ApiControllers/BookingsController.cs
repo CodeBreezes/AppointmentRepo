@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Appointment.EF;
 using Appointment.Models;
+using Appointment.ViewModels;
 
 namespace Appointment.ApiControllers
 {
@@ -41,9 +42,7 @@ namespace Appointment.ApiControllers
 
             return booking;
         }
-
-        // PUT: api/Bookings/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+         
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBooking(int id, Booking booking)
         {
@@ -74,15 +73,37 @@ namespace Appointment.ApiControllers
         }
 
         // POST: api/Bookings
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Booking>> PostBooking(Booking booking)
+        public async Task<ActionResult<Booking>> PostBooking(BookingViewModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Validate Customer and Service exist
+            var customer = await _context.Customers.FindAsync(model.CustomerId);
+            var service = await _context.Services.FindAsync(model.ServiceId);
+
+            if (customer == null)
+                return BadRequest("Customer not found");
+
+            if (service == null)
+                return BadRequest("Service not found");
+
+            var booking = new Booking
+            {
+                ServiceId = model.ServiceId,
+                CustomerId = model.CustomerId,
+                StartedDate = model.StartedDate,
+                StartedTime = model.StartedTime,
+                EndedDate = DateTime.Now 
+            };
+
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBooking", new { id = booking.UniqueId }, booking);
+            return CreatedAtAction(nameof(GetBooking), new { id = booking.UniqueId }, booking);
         }
+
 
         // DELETE: api/Bookings/5
         [HttpDelete("{id}")]
