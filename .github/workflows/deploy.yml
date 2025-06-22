@@ -19,7 +19,6 @@ jobs:
     - name: 📦 Publish project
       run: dotnet publish ./Appointment.csproj -c Release -o out/
 
-    # 1) Take site offline
     - name: 📴 App Offline
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
@@ -29,18 +28,16 @@ jobs:
         local-dir: deploy/           
         server-dir: /www/appointment/
 
-    # 2) Sync your build
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: out/
-        server-dir: /www/appointment/
-        dangerous-clean-slate: true
+    - name: 📴 App Offline
+  uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  with:
+    server: ${{ secrets.FTP_SERVER }}
+    username: ${{ secrets.FTP_USERNAME }}
+    password: ${{ secrets.FTP_PASSWORD }}
+    local-dir: deploy/
+    server-dir: /www/appointment/
 
-    # 3) Bring site back online
+
     - name: 🔄 Remove App Offline
       run: |
         lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<'EOF'
