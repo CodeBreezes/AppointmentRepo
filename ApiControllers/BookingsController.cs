@@ -28,7 +28,11 @@ namespace Appointment.ApiControllers
         {
             return await _context.Bookings.ToListAsync();
         }
-
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetAllBookings()
+        {
+            return await _context.Bookings.ToListAsync();
+        }
         // GET: api/Bookings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Booking>> GetBooking(int id)
