@@ -19,14 +19,6 @@ jobs:
     - name: 📦 Publish project
       run: dotnet publish ./Appointment.csproj -c Release -o out/
 
-    - name: 📴 App Offline
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: deploy/           
-        server-dir: /www/appointment/
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -35,7 +27,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: out/
-        server-dir: /www/appointment/
+        server-dir: \www\appointment
         dangerous-clean-slate: true
 
     - name: 🔄 Remove App Offline
