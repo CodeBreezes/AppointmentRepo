@@ -27,7 +27,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: out/
-        server-dir: \www\appointment
+        server-dir: /www/appointment/
         dangerous-clean-slate: true
 
     - name: 🔄 Remove App Offline
