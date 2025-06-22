@@ -8,8 +8,10 @@ name: 🚀 Deploy website on push
 jobs:
   web-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
 
     - name: ⚙️ Setup .NET
       uses: actions/setup-dotnet@v4
@@ -19,6 +21,14 @@ jobs:
     - name: 📦 Publish project
       run: dotnet publish ./Appointment.csproj -c Release -o out/
 
+    - name: 📴 App Offline
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: deploy/
+        server-dir: /www/appointment/
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -29,6 +39,9 @@ jobs:
         local-dir: out/
         server-dir: /www/appointment/
         dangerous-clean-slate: true
+
+    - name: ⚙️ Install lftp
+      run: sudo apt-get update && sudo apt-get install -y lftp
 
     - name: 🔄 Remove App Offline
       run: |
