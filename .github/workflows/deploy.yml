@@ -1,33 +1,36 @@
+name: Build and Deploy via FTP
+
 on:
   push:
     branches:
       - Appointment_Release
 
-name: 🚀 Deploy website on push
-
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-    - name: ⚙️ Setup .NET
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '9.0.x'  
 
-    - name: 📦 Publish project
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Publish DLLs
       run: dotnet publish ./Appointment.csproj -c Release -o out/
 
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+    - name: Upload to FTP Server
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: out/
-        server-dir: /www/appointment/        
-        dangerous-clean-slate: true
